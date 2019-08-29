@@ -1,6 +1,6 @@
 {
   "name": "generator-web-to-native-app",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Create native application from web app or website",
   "homepage": "https://github.com/sbalasubramanian14/website-to-electron-app",
   "author": {
