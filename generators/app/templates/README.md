@@ -1,1 +1,3 @@
-Simple electron application
+## Electron application
+
+Native application for website/web app

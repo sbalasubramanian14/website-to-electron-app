@@ -1,5 +1,5 @@
-const { app, BrowserWindow } = require('electron')
-
+const { app, BrowserWindow, BrowserView, ipcMain, Menu  } = require('electron')
+const { template } = require('./app-menu-template')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -14,9 +14,19 @@ function createWindow () {
     }
   })
   win.removeMenu()
-  win.loadURL("<%= websiteURL %>")
+  win.loadFile('index.html')
   win.maximize();
-  mainWindow.show();
+  let view = new BrowserView()
+  win.setBrowserView(view)
+  //view.setBounds({ x: 0, y: 0})
+  let bounds= win.getBounds();
+  bounds.height -= 30;
+  bounds.y = 30;
+  view.setBounds(bounds);//{ x: 0, y: 30, width: win.getBounds, height: 300 })
+  view.webContents.loadURL("<%= websiteURL %>")
+  //win.loadURL("https://www.google.com")
+
+  win.show();
   // Open the DevTools.
   //win.webContents.openDevTools()
 
@@ -51,5 +61,13 @@ app.on('activate', () => {
   }
 })
 
+
+ipcMain.on('display-app-menu', (event, arg) => {
+  const appMenu = Menu.buildFromTemplate(template)
+  if(win) {
+    appMenu.popup(win, arg.x, arg.y)
+  }
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
